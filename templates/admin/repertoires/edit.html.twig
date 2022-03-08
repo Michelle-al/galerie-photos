@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification répertoire {{repertoire.id}}{% endblock %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('galerie')}}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{{path('admin')}}">Admin</a></li>
+        <li class="breadcrumb-item "><a href="{{path('admin_repertoires')}}">Gestion des photos</a></li>
+        <li class="breadcrumb-item active">
+            {% if repertoire.id %}
+                {{repertoire.id}}_{{repertoire.ville}}_{{repertoire.pays}}_{{repertoire.annee|date('Y')}}
+            {% else %}
+                Nouveau répertoire    
+            {% endif %}
+            
+        </li>
+    </ol>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-primary">{{message}}</div>
+    {% endfor %}
+    <h1 class="mb-5 mt-5 text-center">
+        {% if repertoire.id %}
+            {{repertoire.id}}_{{repertoire.ville}}_{{repertoire.pays}}_{{repertoire.annee|date('Y')}}
+        {% else %}
+            Création d'un nouveau repertoire
+        {% endif %}
+    </h1>
+    <a href="{{path('admin_repertoires')}}" class="btn btn-primary btn-sm mb-2">Retour</a>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="border p-3">
+        <div class="row">
+            <div class="col">
+                <div>{{ form_label(form.description, 'Description', {
+                    'label_attr': {'class': 'form-label mt-1'}
+                }) }}</div>
+                <div>{{ form_errors(form.description) }}{{ form_widget(form.description) }}</div>
+            </div>
+        </div>
+        <div class="form-group row mt-5">
+            <div class="col-md-4" >
+                <div>{{ form_label(form.titre, 'Titre (optionnel)', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}
+                </div>
+                <div>{{ form_widget(form.titre) }}</div>
+            </div>
+            <div class="col-md-4">
+                <div>{{ form_label(form.ville, 'Ville', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}
+                </div>
+                <div>{{ form_widget(form.ville) }}</div>
+            </div>
+            <div class="col-md-4" >
+                <div> {{ form_label(form.departement, 'Département (optionnel)', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}
+                </div>
+                <div>{{ form_widget(form.departement) }}</div>
+            </div>
+        </div>
+        <div class="row form-group mt-5">
+            <div class="col-md-4" >
+                <div>{{ form_label(form.pays, 'Pays', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}</div>
+                <div>{{ form_widget(form.pays) }}</div>
+            </div>
+            <div class="col-md-4" >
+                <div>{{ form_label(form.annee, 'Date', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}</div>
+                <div>{{ form_widget(form.annee) }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3 class='text-center mb-3 bg-primary text-white p-1'>Photos</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                {% for photo in repertoire.photos %}
+                    <div class="col col-md-6 col-lg-4">
+                        <img src="{{asset('images/photos/' ~  photo.image)}}" alt="{{repertoire.ville}}" class="img-fluid" style="width: 150px;">
+                        <span class="fw-bold">{{loop.index}}</span>
+                        <p>{{photo.image}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>    
+    <div class="row mt-5">
+        <div class="col">
+            <h4>Gestion des photos</h4>
+            <ul class="photos list-group form-group" data-index="{{ form.photos|length > 0 ? form.photos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+                {% for photo in form.photos %}
+                    <li class="list-group-item">
+                        <span class="fw-bold">{{loop.index}}</span>{{ form_widget(photo.imageFile) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="add_item_link btn btn-primary mt-3 m-auto" data-collection-holder-class="photos">Ajouter une photo</button>
+        </div>
+    </div>
+    <div class="row mt-5"> 
+        <div class="col">
+            <h3 class='text-center mb-3 bg-primary text-white p-1'>Tags</h3>
+        </div>
+    </div>
+    <div class="row mt-5"> 
+        <div class="col">
+            <h4>Gestion des tags</h4>
+            {% for tags in repertoire.tags%}
+            {{tags.libelle}}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <ul class="tags list-group form-group" data-index="{{ form.tags|length > 0 ? form.tags|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
+                {% for tag in form.tags %}
+                    <li class="list-group-item">
+                        <span class="col-md-4 ">{{ form_widget(tag.libelle) }}<a href="" class="btn btn-primary btn-sm">Supprimer le tag</a></span>
+                    </li>
+                {% endfor %}
+                
+            </ul>
+            <button type="button" class="add_item_link btn btn-primary mt-3 m-auto" data-collection-holder-class="tags">Ajouter un tag</button>
+        </div>
+    </div>   
+    <div class="row my-5">
+        <div class="col  m-auto">
+            <input type="submit" Value="Valider" class="btn btn-primary" >
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+{% block javascripts %}
+	<script src="{{asset('/js/app.js')}}"></script>
+{% endblock %}

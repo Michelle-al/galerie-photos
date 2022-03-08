@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les photos{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('home')}}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{{path('admin')}}">Admin</a></li>
+        <li class="breadcrumb-item {% if repertoires %}active{% endif %}">Gestion des photos</li>
+    </ol>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-primary">{{message}}</div>
+    {% endfor %}
+    <h1 class="mb-5 mt-5 text-center">Gestion des photos</h1>
+    <a href="{{path('admin_repertoires.create')}}" class="btn btn-primary btn-sm">Ajouter</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                
+                <th>Id</th>
+                <th>Description</th>
+                <th>Titre</th>
+                <th>Photo par défaut</th>
+                <th>Ville</th>
+                <th>Pays</th>
+                <th>Année</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                
+            <tr>
+                {% for repertoire in repertoires %}
+                    <td>{{repertoire.id}}</td>
+                    <td>{{repertoire.description}}</td>
+                    <td>{% if repertoire.titre %}{{repertoire.titre}}{% endif %}</td>
+                    <td>
+                       {% for photo in repertoire.photos %}
+                            {% if loop.first %}
+                                <img src="{{asset('images/photos/' ~  photo.image)}}" alt="{{repertoire.ville}}" class="img-fluid" style="width: 150px;">
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{repertoire.ville}}</td>
+                    <td>{{repertoire.pays}}</td>
+                    <td>{{repertoire.annee | date('Y')}}</td>
+                    <td>
+                        <a href="{{path('admin_repertoires.edit', {id : repertoire.id})}}" class="btn btn-primary btn-sm mb-1" style="display:flex;">Modifier</a>
+                        <a href="" class="btn btn-primary btn-sm" style="display:flex;">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

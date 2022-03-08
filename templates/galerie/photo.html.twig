@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie photos{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("/css/lightbox.css")}}">
+{% endblock %}
+{% block javascript %}
+    <script src="{{asset("/js/lightbox.js")}}" type="module" defer ></script>
+    <!-- // <script src="{{asset("/js/body-scroll-lock.js")}}" type="module" defer ></script> -->
+{% endblock %}
+
+{% block body %}
+    <div class="container" id="conteneur">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{path('home')}}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{path('galerie')}}">Galerie</a></li>
+            <li class="breadcrumb-item active">{{repertoire.ville}} {{repertoire.pays}}</li>
+        </ol>
+        <div class="row mb-5">
+            <div class="col-lg-4 m-auto">
+                <h1 class="text-center mt-5">{{repertoire.ville}} {{repertoire.pays}} ({{repertoire.annee|date('Y')}})</h1>
+                <div class="text-center">{{repertoire.description}}</div>
+            </div>
+        </div>
+        <a href="{{path('galerie')}}" class="btn btn-primary btn-sm">Retour à la galerie</a>
+        <div class="row mt-3">
+        {% for photo in repertoire.photos %}
+            <div class="col-lg-4">
+                <div class=" vignette mb-3" >
+                        <a href="{{asset('images/photos/' ~ photo.image)}}" >
+                            <img src="{{asset('images/photos/' ~ photo.image)}}" alt="{{photo.repertoire.ville}}" class="img-fluid" style="width: 100%;">
+                        </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

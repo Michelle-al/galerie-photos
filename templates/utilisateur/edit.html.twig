@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if utilisateur.id %}
+    Modification  de {{utilisateur.prenom}} {{utilisateur.nom}}
+    {% else %}
+    Création d'un nouvel utilisateur    
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('galerie')}}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{{path('admin')}}">Admin</a></li>
+        <li class="breadcrumb-item "><a href="{{path('admin_utilisateurs')}}"></a></li>
+        <li class="breadcrumb-item active">
+            {% if utilisateur.id %}
+                Modification  de {{utilisateur.prenom}} {{utilisateur.nom}}
+            {% else %}
+                Création d'un nouvel utilisateur    
+            {% endif %}
+            
+        </li>
+    </ol>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-primary">{{message}}</div>
+    {% endfor %}
+    <h1 class="mb-5 mt-5 text-center">
+        {% if utilisateur.id %}
+            Modification  de {{utilisateur.prenom}} {{utilisateur.nom}}
+        {% else %}
+            Création d'un nouvel utilisateur    
+        {% endif %}
+    </h1>
+    <a href="{{path('admin_utilisateurs')}}" class="btn btn-primary btn-sm mb-2">Retour</a>
+    {{ form_start(form) }}
+    <div class="border p-3">
+        <div class="row">
+            <div class="col-md-6">
+                <div>{{ form_label(form.roles, 'Cocher si administrateur', {
+                    'label_attr': {'class': 'form-check-label'}
+                }) }}</div>
+                <div>{{ form_widget(form.roles) }}</div>
+            </div>
+            <div class="col col-md-6">
+                <div>{{ form_label(form.email, 'Pseudo', {
+                    'label_attr': {'class': 'form-label mt-1'}
+                }) }}</div>
+                <div>{{ form_widget(form.email) }}</div>
+            </div>
+        </div>
+        <div class="form-group row mt-5">
+            <div class="col-md-4" >
+                <div>{{ form_label(form.civilite, 'Civilité', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}</div>
+                <div>{{ form_widget(form.civilite) }}</div>
+            </div>
+            <div class="col-md-4" >
+            <div>{{ form_label(form.prenom, 'Prénom', {
+                'label_attr': {'class': 'form-label mt-4'}
+            }) }}</div>
+                <div>{{ form_widget(form.prenom) }}</div>
+            </div>
+            <div class="col-md-4" >
+                <div>{{ form_label(form.nom, 'Nom', {
+                    'label_attr': {'class': 'form-label mt-4'}
+                }) }}</div>
+                <div>{{ form_widget(form.nom) }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-5">
+        <div class="col  m-auto">
+            <input type="submit" Value="Valider" class="btn btn-primary" >
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+

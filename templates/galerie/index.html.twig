@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie photos{% endblock %}
+
+{% block body %}
+    <div class="container">
+    {% if not tag  %}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{path('home')}}">Accueil</a></li>
+            <li class="breadcrumb-item active" >Galerie</li>
+        </ol>
+    {% elseif tag  %}
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{path('home')}}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{path('galerie')}}">Galerie</a></li>
+            <li class="breadcrumb-item active"><a href="">{{ tag }}</a></li>
+        </ol>
+    {% endif %}
+        {{ dump(tag) }}
+        <div class="row mb-5">
+            <div class="accordion col-12 col-sm-6 col-md-3" id="accordionTag">
+                <div class="accordion-item ">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Filtre
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionTag" >
+                    <div class="accordion-body">
+                        {% for tag in tags %}
+                            <a href="{{path('findTag', {'tag': tag.libelle, 'id':tag.id })}}" class="text-decoration-none badge bg-secondary">{{tag.libelle}}</a>
+                        {% endfor %}
+                    </div>
+                    </div>
+                </div>   
+            </div>
+        
+            <div class="row col-12 col-sm-6 col-md-9">
+                {% for repertoire in repertoires %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card galerie mb-3" style="max-width: 22rem;">
+                        <a href="{{path('galerie-photos', {id : repertoire.id})}}">
+                            {% for photo in repertoire.photos %}
+                                {% if loop.first %}
+                                    <img src="{{vich_uploader_asset(photo, 'imageFile')}}" alt="{{repertoire.ville}}" class="img-fluid" style="width: 100%;">
+                                {% endif %}
+                            {% endfor %}
+                        </a>
+                    
+                        <div class="card-header d-flex justify-content-between ">
+                            <div  class="fw-bolder">
+                                {% if repertoire.titre and repertoire.ville %}
+                                    {{repertoire.titre}} - {{repertoire.ville}}
+                                {% elseif repertoire.titre %}
+                                    {{repertoire.titre}}
+                                {% elseif repertoire.ville %}
+                                    {{repertoire.ville}}
+                                {% endif %}
+                            </div>
+                            <div  class="fw-bold">{{repertoire.annee|date('Y')}}</div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{repertoire.pays}} {% if repertoire.departement %}<em class="small">({{repertoire.departement}})</em>  {% endif %}</h4>
+                            <div>
+                                {{repertoire.description}}
+                            </div>
+                            <div class="text-center mt-2"><a href="{{path('galerie-photos', {id : repertoire.id})}}" class="btn btn-primary ">Voir plus</a></div>
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

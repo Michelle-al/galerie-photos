@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un répertoire {{repertoire.id}}{% endblock %}
+
+{% block titre %}Nouveau répertoire{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <p>Créé par  le </p>
+    {{ form_start(form) }}
+    <div class="invalid-feedback">
+        {{ form_errors(form) }}
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <div>{{ form_label(form.description, 'Description', {
+                'label_attr': {'class': 'form-label mt-4'}
+            }) }}</div>
+            <div>{{ form_widget(form.description) }}</div>
+        </div>
+    </div>
+    <div class="form-group row mt-5">
+        <div class="col-md-4" >
+            <div>{{ form_label(form.annee, 'Année', {
+                'label_attr': {'class': 'form-label mt-4'}
+            }) }}</div>
+            <div>{{ form_widget(form.annee) }}</div>
+        </div>
+        <div class="col-md-4" >
+           <div> {{ form_label(form.ville, 'Ville', {
+            'label_attr': {'class': 'form-label mt-4'}
+        }) }}</div>
+            <div>{{ form_widget(form.ville) }}</div>
+        </div>
+        <div class="col-md-4" >
+            <div>{{ form_label(form.pays, 'Pays', {
+                'label_attr': {'class': 'form-label mt-4'}
+            }) }}</div>
+            <div>{{ form_widget(form.pays) }}</div>
+        </div>
+    </div>
+        
+    <div class="row mt-5">
+        <h3>Photos</h3>
+        
+            <ul class="photos list-group form-group" data-index="{{ form.photos|length > 0 ? form.photos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+                {% for photo in form.photos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center row">
+                        <span class="col-md-4 d-block">{{ form_widget(photo.imageFile) }}</span>
+                        <span class="col-md-4 d-block"></span>
+                    </li>
+                {% endfor %}
+                
+            </ul>
+        <button type="button" class="add_item_link btn btn-primary mt-3 m-auto" data-collection-holder-class="tags">Ajouter une photo</button>
+    </div>
+    {{ dump(form) }}
+    <div class="row mt-5">
+        <h3>Tags</h3>
+        <ul class="tags list-group form-group" data-index="{{ form.tags|length > 0 ? form.tags|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
+            {% for tag in form.tags %}
+                <li class="list-group-item d-flex justify-content-between align-items-center row">
+                    <span class="col-md-4 d-block">{{ form_widget(tag.libelle) }}</span>
+                    <span class="col-md-4 d-block">{{ form_widget(tag.imageFile) }}</span>
+                </li>
+            {% endfor %}
+            
+        </ul>
+        <button type="button" class="add_item_link btn btn-primary mt-3 m-auto" data-collection-holder-class="tags">Ajouter un tag</button>
+    </div>   
+    <div class="row my-5">
+        <div class="col  m-auto">
+            <input type="submit" Value="Valider" class="btn btn-primary" >
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    
+
+    {# <div class="row mt-5">
+        <div class="col-lg-4" >
+            <h5>Photos</h5>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="" class="btn btn-primary btn-sm">Ajouter</a></li>
+                {% for photos in repertoire.photos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <img src="{{asset('images/photos/' ~ photos.image)}}" alt="" class="img-fluid" style="width: 100px;">
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-4" >
+            <h5>Tags</h5>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="" class="btn btn-primary btn-sm">Ajouter</a>
+                </li>
+                {% for tags in repertoire.tags %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{tags.libelle|capitalize}}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> #}
+
+</div>
+
+{% endblock %}

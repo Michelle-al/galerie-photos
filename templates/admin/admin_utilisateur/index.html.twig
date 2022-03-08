@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les photos{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('galerie')}}">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="{{path('admin')}}">Admin</a></li>
+        <li class="breadcrumb-item active">Gestion des utilisateurs</li>
+    </ol>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-primary">{{message}}</div>
+    {% endfor %}
+    <h1 class="mb-5 mt-5 text-center">Gestion des utilisateurs</h1>
+    <a href="{{ path('utilisateur_new') }}" class="btn btn-primary btn-sm">Ajouter</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pseudo</th>
+                <th>Administateur</th>
+                <th>Civilité</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                {% for utilisateur in utilisateurs %}
+            <tr>
+                    <td>{{utilisateur.id}}</td>
+                    <td>{{utilisateur.pseudo}}</td>
+                    <td>
+                        {{utilisateur.admin ? 'Oui' : 'Non' }}
+                    </td>
+                    <td>
+                        {{ utilisateur.civilite ? 'Mme' : 'Mr' }}
+                    </td>
+                    <td>{{utilisateur.nom}}</td>
+                    <td>{{utilisateur.prenom}}</td>
+                    <td class="d-inline-block">
+                        <a href="" class="btn btn-primary btn-sm mb-1" style="display:flex;">Modifier</a>
+                        <form method="post" action="{{ path('utilisateur_delete', {'id': utilisateur.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloire supprimer cet élément ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ utilisateur.id) }}">
+                            <button class="btn btn-primary btn-sm ">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">Aucun utilisateur trouvé</td>
+                </tr>
+                {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

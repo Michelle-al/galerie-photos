@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration la galerie photos{% endblock %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path('home')}}">Accueil</a></li>
+        <li class="breadcrumb-item active">Admin</li>
+    </ol>
+    <h1 class="text-center mt-5">Administration du site</h1>
+    <div class="d-grid gap-2 mt-5">
+        <a href="{{path('admin_repertoires')}}" class="btn btn-lg btn-outline-primary  d-flex justify-content-around">
+            Gestion de la galerie
+            {% for repertoire in repertoires %}
+                <span class="badge bg-primary rounded-pill align-self-center">{{repertoire.1}}</span>
+            {% endfor %}
+        </a>
+        <a href="{{path('admin_utilisateurs')}}" class="btn btn-lg btn-outline-primary d-flex justify-content-around" >
+            Gestion des utilisateurs
+            {% for utilisateur in utilisateurs %}
+                <span class="badge bg-primary rounded-pill align-self-center">{{utilisateur.1}}</span>
+            {% endfor %}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+
+
