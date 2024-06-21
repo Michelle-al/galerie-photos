@@ -13,7 +13,7 @@
         <div class="alert alert-primary">{{message}}</div>
     {% endfor %}
     <h1 class="mb-5 mt-5 text-center">Gestion des utilisateurs</h1>
-    <a href="{{ path('utilisateur_new') }}" class="btn btn-primary btn-sm">Ajouter</a>
+    <a href="{{ path('utilisateur_new') }}" class="btn btn-primary btn-sm">+ Ajouter</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -44,7 +44,7 @@
                         <a href="{{path('utilisateur_edit', {id : utilisateur.id})}}" class="btn btn-primary btn-sm mb-1" style="display:flex;">Modifier</a>
                         <form method="post" action="{{ path('utilisateur_delete', {'id': utilisateur.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloire supprimer cet élément ?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ utilisateur.id) }}">
-                            <button class="btn btn-primary btn-sm">Supprimer</button>
+                            <button class="btn btn-warning btn-sm">Supprimer</button>
                         </form>
                     </td>
                 </tr>

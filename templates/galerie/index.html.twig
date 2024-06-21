@@ -3,6 +3,7 @@
 {% block title %}Galerie photos{% endblock %}
 
 {% block body %}
+    <div class="mtop-body mb-3 p-0"></div>
     <div class="container">
     {% if not tag  %}
         <ol class="breadcrumb">
@@ -16,7 +17,6 @@
             <li class="breadcrumb-item active"><a href="">{{ tag }}</a></li>
         </ol>
     {% endif %}
-        {{ dump(tag) }}
         <div class="row mb-5">
             <div class="accordion col-12 col-sm-6 col-md-3" id="accordionTag">
                 <div class="accordion-item ">
@@ -27,9 +27,11 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionTag" >
                     <div class="accordion-body">
+                        
                         {% for tag in tags %}
-                            <a href="{{path('findTag', {'tag': tag.libelle, 'id':tag.id })}}" class="text-decoration-none badge bg-secondary">{{tag.libelle}}</a>
+                            <a href="{{path('findTag', {'tag': tag.libelle })}}" class="text-decoration-none badge bg-primary {% if tag.libelle %}active{% endif %}">{{tag.libelle}}</a>
                         {% endfor %}
+                        
                     </div>
                     </div>
                 </div>   
@@ -38,7 +40,7 @@
             <div class="row col-12 col-sm-6 col-md-9">
                 {% for repertoire in repertoires %}
                 <div class="col-md-6 col-lg-4">
-                    <div class="card galerie mb-3" style="max-width: 22rem;">
+                    <div class="card galerie mb-3 mx-auto" style="max-width: 22rem;">
                         <a href="{{path('galerie-photos', {id : repertoire.id})}}">
                             {% for photo in repertoire.photos %}
                                 {% if loop.first %}
@@ -48,26 +50,22 @@
                         </a>
                     
                         <div class="card-header d-flex justify-content-between ">
-                            <div  class="fw-bolder">
-                                {% if repertoire.titre and repertoire.ville %}
-                                    {{repertoire.titre}} - {{repertoire.ville}}
-                                {% elseif repertoire.titre %}
-                                    {{repertoire.titre}}
-                                {% elseif repertoire.ville %}
-                                    {{repertoire.ville}}
-                                {% endif %}
-                            </div>
+                            <div  class="fw-bolder">{{repertoire.pays|slice(0, 16)}}</div>
                             <div  class="fw-bold">{{repertoire.annee|date('Y')}}</div>
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title">{{repertoire.pays}} {% if repertoire.departement %}<em class="small">({{repertoire.departement}})</em>  {% endif %}</h4>
+                            <h4 class="card-title">{{repertoire.ville|slice(0, 14)}}</h4>
                             <div>
-                                {{repertoire.description}}
+                                {% if repertoire.description|length < 42 %}
+                                    {{repertoire.description}}
+                                {% else %}
+                                {{repertoire.description|slice(0, 39)}}...
+                                {% endif %}
                             </div>
                             <div class="text-center mt-2"><a href="{{path('galerie-photos', {id : repertoire.id})}}" class="btn btn-primary ">Voir plus</a></div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 {% endfor %}
             </div>
         </div>

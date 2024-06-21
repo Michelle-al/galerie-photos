@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Repertoire;
-use App\Entity\Tag;
+use App\Form\RepertoireType;
 use App\Repository\TagRepository;
 use App\Repository\RepertoireRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,24 +15,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class GalerieController extends AbstractController
 {
     #[Route('/', name: 'galerie')]
-    public function index(RepertoireRepository $repertoireRepo, TagRepository $tagRepo, $tag=null): Response
+    public function index(RepertoireRepository $repertoireRepo, TagRepository $tagRepo, $tag= false): Response
     {
+        $page = "galerie";
         $repertoires = $repertoireRepo->findBy([], ['annee' => 'DESC']);
         
         $tags = $tagRepo->findBy([], ['libelle' => 'ASC']);
-        return $this->render('galerie/index.html.twig', compact('repertoires', 'tag', 'tags'));
+        return $this->render('galerie/index.html.twig', compact('repertoires', 'tag', 'tags', 'page'));
     }
 
-    #[Route('/tag/{tag}', name: 'findTag', requirements: ['tag' => '\w+|\w+\s\w+|\s\w+'])]
-    public function getCustomiseTag(RepertoireRepository $repertoireRepo, Repertoire $repertoires, TagRepository $tagRepo, Tag $tag): Response
+    #[Route('/tag/{tag}', name: 'findTag')]
+    public function getCustomiseTag(RepertoireRepository $repertoireRepo, TagRepository $tagRepo, $tag): Response
     {
-        $tag = $tagRepo->findAll();
-      
-        $repertoires = $repertoireRepo->findBy([], array('libelle'=> $tag));
-        
+        $page = 'galerie';
+        $oneTag = $tagRepo->findOneBy(['libelle' => $tag]);
+        $tags = $tagRepo->findBy([], ['libelle' => 'ASC']); 
+        $tag = $oneTag->getLibelle();
+        $repertoires = $repertoireRepo->findByTag($tag);
+    
         return $this->render('galerie/index.html.twig', [
             'repertoires' => $repertoires,
-            'tag' => $tag
+            'tag' => $tag,
+            'page' => $page,
+            'tags' => $tags
+             
         
         ]);
     }
@@ -40,8 +46,11 @@ class GalerieController extends AbstractController
     #[Route('/{id}', name: 'galerie-photos')]
     public function photos(Repertoire $repertoire): Response
     {
+        $page = "galerie";
         return $this->render('galerie/photo.html.twig', [
-            'repertoire' => $repertoire
+            'repertoire' => $repertoire,
+            'page' => $page 
+
         ]);
     }
 

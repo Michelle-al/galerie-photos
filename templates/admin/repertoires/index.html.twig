@@ -13,7 +13,7 @@
         <div class="alert alert-primary">{{message}}</div>
     {% endfor %}
     <h1 class="mb-5 mt-5 text-center">Gestion des photos</h1>
-    <a href="{{path('admin_repertoires.create')}}" class="btn btn-primary btn-sm">Ajouter</a>
+    <a href="{{path('admin_repertoires.create')}}" class="btn btn-primary btn-sm">+ Ajouter</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -48,7 +48,7 @@
                     <td>{{repertoire.annee | date('Y')}}</td>
                     <td>
                         <a href="{{path('admin_repertoires.edit', {id : repertoire.id})}}" class="btn btn-primary btn-sm mb-1" style="display:flex;">Modifier</a>
-                        <a href="" class="btn btn-primary btn-sm" style="display:flex;">Supprimer</a>
+                        <a href="" class="btn btn-warning btn-sm" style="display:flex;">Supprimer</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -24,14 +24,12 @@ class Repertoire
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message = "Ce champ ne peut pas être vide")
-     * @Assert\Length(min= 5, max= 10, minMessage= " Pas assez long")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(message = "Ce champ ne peut pas être vide")
-     * @Assert\Length(min= 5, max= 10)
      */
     private $ville;
 

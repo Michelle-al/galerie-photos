@@ -5,21 +5,18 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\TagRepository;
+use App\Repository\RepertoireRepository;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
-    public function index(): Response
+#[Route('/', name: 'home')]
+    public function index(RepertoireRepository $repertoireRepo, TagRepository $tagRepo): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+    $page = "home";
+    $repertoires = $repertoireRepo->findBy([], ['id' => 'DESC'], 3);
+    
+    return $this->render('home/index.html.twig', compact('repertoires', 'page'));
     }
 
-    public function lastPhoto(): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
 }

@@ -3,6 +3,7 @@
 {% block title %}Gérer les photos{% endblock %}
 
 {% block body %}
+<div class="mtop-body"></div>
 <div class="container mt-4">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{path('galerie')}}">Accueil</a></li>
@@ -13,7 +14,7 @@
         <div class="alert alert-primary">{{message}}</div>
     {% endfor %}
     <h1 class="mb-5 mt-5 text-center">Gestion des utilisateurs</h1>
-    <a href="{{ path('utilisateur_new') }}" class="btn btn-primary btn-sm">Ajouter</a>
+    <a href="{{ path('utilisateur_new') }}" class="btn btn-warning btn-sm">+ Ajouter</a>
     <table class="table table-striped">
         <thead>
             <tr>

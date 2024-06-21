@@ -19,6 +19,21 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+
+    /**
+     * @return Tag[] Returns an array of Tag objects
+     */
+    
+    public function findBylibelle($libelle)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.libelle = :libelle')
+            ->setParameter('val', $libelle)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Tag[] Returns an array of Tag objects
     //  */

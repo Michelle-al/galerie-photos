@@ -3,31 +3,99 @@
 {% block title %}Accueil galerie photo{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <section>
-        <div class="bcg-accueil"></div>
-    </section>
-
-
-    <section class="page flex bg-beige">
-        <div class="container align-self-center">
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{asset('images/coucher-soleil.jpg')}}" alt="" class="img-fluid">
+<div class="container-fluid px-0">
+    <div class="bcg-accueil">
+        <h1 class="display-1 text-secondary"> GALERIE PHOTO</h1>
+        <a href="{{path('galerie')}}" class="btn btn-warning">En voir plus</a> 
+    </div>
+    <div  class="bg-photo"></div>
+    <div class="container-fluid flex pt-6 pb-5">
+        <div class="container">
+            <div class="row bck-présentation mt-4 mb-6 px-0 justify-content-between">
+                <div class="col-md-6 display-6 align-self-center">
+                    <img class="img-fluid" src="{{asset('images/citation.jpg')}}" alt="Citation de Marcel Proust">
                 </div>
-                <div class="col-6 align-self-center">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus, rem natus esse rerum nostrum explicabo corrupti ex cupiditate sed ipsum iure dicta, quaerat pariatur a ut voluptates corporis voluptatum porro?
+                <div class="col-md-6 align-self-center">
+                    <img class="img-fluid" src="{{asset('images/coucher-soleil.jpg')}}" alt="Coucher de soleil">
                 </div>
             </div>
         </div>
-    </section>
-    <section class="page container">
+    </div>
+    <div class="page container py-5 ">
         <h2 class="text-center">Dernières photos ajoutées</h2>
-        <div class="row">
-            <div class="photo"></div>
-            <div class="photo"></div>
-            <div class="photo"></div>
+
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for repertoire in repertoires %}
+              <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <div class="col-md-6 col-lg-4"> 
+                    <div class="card galerie mx-auto mb-3" style="max-width: 22rem;">
+                        <a href="{{path('galerie-photos', {id : repertoire.id})}}">
+                            {% for photo in repertoire.photos %}
+                                {% if loop.first %}
+                                    <img src="{{vich_uploader_asset(photo, 'imageFile')}}" alt="{{repertoire.ville}}" class="img-fluid" style="width: 100%;">
+                                {% endif %}
+                            {% endfor %}
+                        </a>
+                    
+                        <div class="card-header d-flex justify-content-between ">
+                            <div  class="fw-bolder">
+                                {{repertoire.pays}}
+                            </div>
+                            <div  class="fw-bold">{{repertoire.annee|date('Y')}}</div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title"> {{repertoire.ville}}</h4>
+                            <div>
+                                {{repertoire.description}}
+                            </div>
+                            <div class="text-center mt-2"><a href="{{path('galerie-photos', {id : repertoire.id})}}" class="btn btn-warning ">Voir plus</a></div>
+                        </div>
+                    </div>
+                {# end of card #}
+                 </div>
+              </div>
+              {% endfor %}
+              
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
         </div>
-    </section>
+        <div class="row mt-6 justify-content-center" id="last-photos">
+            {% for repertoire in repertoires %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card galerie mx-auto mb-3" style="max-width: 22rem;">
+                    <a href="{{path('galerie-photos', {id : repertoire.id})}}">
+                        {% for photo in repertoire.photos %}
+                            {% if loop.first %}
+                                <img src="{{vich_uploader_asset(photo, 'imageFile')}}" alt="{{repertoire.ville}}" class="img-fluid" style="width: 100%;">
+                            {% endif %}
+                        {% endfor %}
+                    </a>
+                
+                    <div class="card-header d-flex justify-content-between ">
+                        <div  class="fw-bolder">
+                            {{repertoire.pays}}
+                        </div>
+                        <div  class="fw-bold">{{repertoire.annee|date('Y')}}</div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{repertoire.ville}}</h4>
+                        <div>
+                            {{repertoire.description}}
+                        </div>
+                        <div class="text-center mt-2"><a href="{{path('galerie-photos', {id : repertoire.id})}}" class="btn btn-warning ">Voir plus</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
