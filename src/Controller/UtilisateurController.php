@@ -75,6 +75,7 @@ class UtilisateurController extends AbstractController
     #[Route('/{id}/edit', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Utilisateur $utilisateur): Response
     {
+        $page = 'user';
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
 
@@ -89,6 +90,7 @@ class UtilisateurController extends AbstractController
         return $this->renderForm('utilisateur/edit.html.twig', [
             'utilisateur' => $utilisateur,
             'form' => $form,
+            'page' => $page
         ]);
     }
 
