@@ -37,11 +37,13 @@ class AdminRepertoireController extends AbstractController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+        $page = 'admin';
         $repertoires = $this->repository->findCount();
         $utilisateurs = $this->repo->findCountUsers();
         return $this->render('admin/index.html.twig',[
             'repertoires'=> $repertoires,
-            'utilisateurs'=> $utilisateurs
+            'utilisateurs'=> $utilisateurs,
+            'page' => $page
         ]);
         return $this->render('admin/index.html.twig');
     }
@@ -49,22 +51,23 @@ class AdminRepertoireController extends AbstractController
     #[Route('/admin/galerie', name: 'admin_repertoires')]
     public function repertoiresAdmin(): Response
     {
+        $page = 'admin-galerie';
         $repertoires = $this->repository->findAll();
         return $this->render('admin/repertoires/index.html.twig',[
-            'repertoires'=> $repertoires
+            'repertoires'=> $repertoires,
+            'page' => $page
         ]);
     }
 
     #[Route('/admin/galerie/nouveau', name: 'admin_repertoires.create', methods: ['GET','POST'])]
     public function new(Request $request): Response
     {   
+        $page = "admin";
         $repertoire = new Repertoire(); 
         $form = $this->createForm(RepertoireType::class, $repertoire);
         $form->handleRequest($request);
-        dump($request->request);
         if($form->isSubmitted() && $form->isValid()){
             $photos = $repertoire->getPhotos();
-            dump($photos);
             foreach($photos as $key => $photo){
                 $photo->setRepertoire($repertoire);
                 $photos->set($key,$photo);
@@ -88,15 +91,18 @@ class AdminRepertoireController extends AbstractController
 
             return $this->redirectToRoute('admin_repertoires');
         }
-        return $this->render('admin/repertoires/edit.html.twig',[
+        return $this->render('admin/repertoires/create.html.twig',[
             'repertoire'=> $repertoire,
             'form'=> $form->createView(),
+            'page' => $page
         ]);
     }
 
     #[Route('/admin/galerie/modifier/{id}', name: 'admin_repertoires.edit')]
-    public function edit(Request $request, Repertoire $repertoire): Response
+    public function edit(Request $request, Repertoire $repertoire, TagRepository $tagRepo): Response
     {
+        $tagList = $tagRepo->findBy([], ['libelle' => 'ASC']);
+        $page = 'admin';
         //Photos
         $originalPhotos = new ArrayCollection();
 
@@ -135,6 +141,8 @@ class AdminRepertoireController extends AbstractController
             }
             //Tags
             $tags = $repertoire->getTags();
+            
+            dump($tagList);
             dump($tags);
             // $tagDb = $this->repoTag->findOneBy(array('libelle'=> '2016'));
             // dump($tagDb);
@@ -145,8 +153,8 @@ class AdminRepertoireController extends AbstractController
             }
             dump($tags);
 
-            $this->em->persist($repertoire);
-            $this->em->flush();
+            // $this->em->persist($repertoire);
+            // $this->em->flush();
             
             $this->addFlash("success", "Les modifications ont bien été effectuée");
 
@@ -157,15 +165,18 @@ class AdminRepertoireController extends AbstractController
         return $this->render('admin/repertoires/edit.html.twig',[
             'repertoire'=> $repertoire,
             'form'=> $form->createView(),
-            'id' => $repertoire->getId()
+            'id' => $repertoire->getId(),
+            'page' => $page,
+            'tagList' => $tagList
         ]);
     }
 
     #[Route('/admin/galerie/delete/{id}', name: 'admin_repertoire.delete')]
     public function delete(): Response
     {
+        $page = 'admin';
         $repertoires = $this->repository->findAll();
-        return $this->render('admin/repertoires/index.html.twig',compact('repertoires'));
+        return $this->render('admin/repertoires/index.html.twig',compact('repertoires', 'page'));
     }
 
     

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/admin/utilisateur')]
+#[Route('/admin/utilisateurs')]
 class UtilisateurController extends AbstractController
 {   
      /**
@@ -29,9 +29,11 @@ class UtilisateurController extends AbstractController
     #[Route('/', name: 'admin_utilisateurs', methods: ['GET'])]
     public function index(): Response
     {
+        $page = 'user';
         $utilisateurs = $this->repository->findAll();
         return $this->render('utilisateur/index.html.twig', [
             'utilisateurs' => $utilisateurs,
+            'page' => $page
         ]);
     }
 
@@ -73,6 +75,7 @@ class UtilisateurController extends AbstractController
     #[Route('/{id}/edit', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Utilisateur $utilisateur): Response
     {
+        $page = 'user';
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
         $form->handleRequest($request);
 
@@ -87,6 +90,7 @@ class UtilisateurController extends AbstractController
         return $this->renderForm('utilisateur/edit.html.twig', [
             'utilisateur' => $utilisateur,
             'form' => $form,
+            'page' => $page
         ]);
     }
 

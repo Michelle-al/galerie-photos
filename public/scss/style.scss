@@ -1,0 +1,123 @@
+
+@import "_variables_overrides.scss"; 
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+body{
+    margin-top: 71px;
+}
+.mtop-body{
+    background-image: url("../images/galerie.jpg") ;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 250px;
+}
+#conteneur{
+    min-height: calc(100vh - 124px);
+}
+//navbar
+.nav-link{
+    position: relative;
+    &:hover::before{
+            opacity: 0.5;
+    }
+    &::before{
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50px;
+        background-color: $orange;
+        bottom: 14px;
+        left: -12px;
+        opacity: 0;
+    }
+    @include media-breakpoint-up(lg) {
+        &::before{
+            content: "";
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50px;
+            background-color: $orange;
+            bottom: 15px;
+            left: 12px;
+            opacity: 0;
+        }
+    }
+    &.active{
+        &::before{
+            opacity: 1;
+        }
+    }
+    
+}
+.bcg-accueil{
+    display: flex;
+    justify-content: center;
+    z-index: 4;
+    
+    h1{
+        position: absolute;
+        top: 50%;
+        z-index: 5;
+    }
+    a{
+        position: absolute;
+        top: 65%;
+        z-index: 5;
+    }
+}    
+
+    .bg-photo{
+        background-image: url("../images/accueil.jpg");
+        height: calc(100vh - 71px);  
+        background-size: cover;
+        background-attachment: fixed;
+        filter: brightness(46%);
+    }
+   
+
+
+.bck-présentation{
+    div:nth-child(1){
+        @include media-breakpoint-up(lg) { 
+            position: relative;
+            top: 100px;
+            left: 50px;
+        }
+    }
+    div:nth-child(2){
+        @include media-breakpoint-up(lg) { 
+            position: relative;
+            right: 50px;
+
+        }
+    }
+}
+#carouselExampleControls{
+    @include media-breakpoint-up(md) {
+         display: none;
+    }
+}
+#last-photos{
+    display: none;
+    @include media-breakpoint-up(md) {
+        display: flex;
+    }
+}
+ a.badge{
+    &:hover{
+        background-color: $white !important;
+        color: $dark-blue;
+    }
+    &.active{
+        background-color: $white  !important;
+        color: $dark-blue;
+    }
+}
+footer{
+    min-height: 53px;
+}
+
+
+

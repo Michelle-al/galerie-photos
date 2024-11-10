@@ -1,5 +1,11 @@
 # Galerie photo
-Galerie photo développée avec le framework symfony 5.3   
+Galerie photo développée avec le framework symfony 5.3.
+Mise à jour mineure effectué passage à 5.4.
+
+## Installation
+`git clone https://github.com/Michelle-al/galerie-photos.git`
+`cd galerie-photos`
+`composer install`
 
 ### Accueil
 ![Accueil galerie](https://github.com/Michelle-al/galerie-photos/assets/51328399/18f035ca-3e5e-475c-8b42-c67337d4907e)  
