@@ -8,14 +8,13 @@ import {enableBodyScroll, disableBodyScroll} from './body-scroll-lock.js'
     static init(){
         const links = Array.from(document.querySelectorAll('a[href$=".jpeg"], a[href$=".jpg"]'))
         const galerie = links.map(link => link.getAttribute('href'))
-        const totalImage = galerie.length
+        const numberOfImage = galerie.length
         links.forEach(link => link.addEventListener('click', e => {
             e.preventDefault()
-            let pos = galerie.findIndex(image =>  image == e.currentTarget.getAttribute('href'))
-            let position = (pos + 1) +'/'+ totalImage
+            let currentPosition = galerie.findIndex(image =>  image == e.currentTarget.getAttribute('href'))
+            let position = (currentPosition + 1) +'/'+ numberOfImage
             new Lightbox(e.currentTarget.getAttribute('href'), galerie, position)
         }))
-        console.log('hello');
     }
    
     /**
